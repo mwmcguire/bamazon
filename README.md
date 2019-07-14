@@ -1,7 +1,7 @@
 # Bamazon
 CLI Amazon-like storefront using MySQL
 
-# NPM packages to install:
+### NPM packages to install:
 - MySql
 - Inquirer
 
