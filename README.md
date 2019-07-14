@@ -1,5 +1,5 @@
 # Bamazon
-Amazon-like storefront using MySQL
+CLI Amazon-like storefront using MySQL
 
 This app...
 - Takes in orders from customers and depletes stock from inventory
