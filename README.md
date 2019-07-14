@@ -5,7 +5,7 @@ CLI Amazon-like storefront using MySQL
 - MySql
 - Inquirer
 
-This app...
+### What this app do?
 - Takes in orders from customers and depletes stock from inventory
 
 User is shown a list of items with their list price and is asked to pick an item number and quantity
