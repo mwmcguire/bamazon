@@ -26,6 +26,7 @@ function displayItems() {
   // query database for all items available
   connection.query("SELECT item_id, product_name, price FROM products", function(err, res) {
     if (err) throw err;
+    console.log("WELCOME TO BAMAZON!")
     for (var i = 0; i < res.length; i++) {
       console.log (
         "Item ID: " + res[i].item_id +
@@ -57,7 +58,7 @@ function purchaseItem() {
   .then(function(selection) {
     connection.query("SELECT * FROM products WHERE ?", { item_id: selection.item_id }, function(err, res) {
       if (err) throw err
-      console.log(res);
+      // console.log(res);
 
       var stockQuantity = res[0].stock_quantity;
       var price = res[0].price;
