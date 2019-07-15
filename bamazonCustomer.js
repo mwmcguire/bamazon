@@ -1,10 +1,10 @@
 // require node packages
-var mysql = require("mysql");
-var inquirer = require("inquirer");
-var divider = "------------------------------------";
+const mysql = require("mysql");
+const inquirer = require("inquirer");
+const divider = "-----------------------------------";
 
 // set variable for mysql connection information
-var connection = mysql.createConnection({
+const connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
   user: "root",
@@ -13,28 +13,26 @@ var connection = mysql.createConnection({
 });
 
 // connect to mysql server and sql database
-connection.connect(function(err) {
+connection.connect((err) => {
   if (err) throw err;
-  console.log ("connected as id " + connection.threadId);
+  console.log (`connected as id ${connection.threadId}`);
   displayItems();
 });
 
 
 // display all items for sale (ids, names, and price)
-function displayItems() {
+const displayItems = () => {
 
   // query database for all items available
-  connection.query("SELECT item_id, product_name, price FROM products", function(err, res) {
+  connection.query("SELECT item_id, product_name, price FROM products", (err, res) => {
     if (err) throw err;
+
     console.log("WELCOME TO BAMAZON!")
-    for (var i = 0; i < res.length; i++) {
-      console.log (
-        "Item ID: " + res[i].item_id +
-        " || Product name: " + res[i].product_name +
-        " || Price: " + res[i].price
-      );
-      console.log(divider);
-    }
+    res.forEach(item => console.log(
+        `Item ID: ${item.item_id} || Product name: ${item.product_name} || Price: ${item.price}
+        ${divider}`)
+    );
+
     purchaseItem();
   });
 }
@@ -42,7 +40,7 @@ function displayItems() {
 // ask user what they want to purchase:
   // ID of product they would like to buy
   // how many units they would like to buy
-function purchaseItem() {
+const purchaseItem = () => {
   inquirer.prompt([
     {
       name: "item_id",
@@ -55,13 +53,13 @@ function purchaseItem() {
       message: "Enter the quantity of this item "
     }
   ])
-  .then(function(selection) {
-    connection.query("SELECT * FROM products WHERE ?", { item_id: selection.item_id }, function(err, res) {
+  .then((selection) => {
+    connection.query("SELECT * FROM products WHERE ?", { item_id: selection.item_id }, (err, res) => {
       if (err) throw err
       // console.log(res);
 
-      var stockQuantity = res[0].stock_quantity;
-      var price = res[0].price;
+      const stockQuantity = res[0].stock_quantity;
+      const price = res[0].price;
 
       // check inventory if there is enough to meet customer request
       if (stockQuantity <= 0 || selection.item_quantity > stockQuantity) {
@@ -80,15 +78,15 @@ function purchaseItem() {
             {
               item_id: selection.item_id
             }
-          ], function (err, res) {
+          ], (err, res) => {
             if (err) throw err
 
             // show customer total cost of purchase
             console.log ("Order placed!");
-            console.log ("Your total is $" + price * selection.item_quantity);
+            console.log (`Your total is $${price * selection.item_quantity}`);
             connection.end();
-          })
+          });
       }
-    })
+    });
   })
 }
